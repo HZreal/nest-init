@@ -21,8 +21,8 @@ export class AppController {
 
 @Controller('/index')
 export class IndexController {
-    @Get('/all')
-    findAll(): string {
+    @Get('/')
+    getIndex(): string {
         return 'index page';
     }
 }
