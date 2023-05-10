@@ -5,8 +5,11 @@ import {
     LoggerClassMiddleware,
     loggerFunctionMiddleware,
 } from '../common/middleware/loggerMiddleware';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from './learn.entity';
 
 @Module({
+    imports: [TypeOrmModule.forFeature([User])],
     controllers: [LearnController],
     providers: [LearnService],
 })

@@ -9,7 +9,10 @@ import {
     Res,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { CreateCatDto } from './dto/learn.dto';
+import { CreateuserDto } from './dto/learn.dto';
+import { LearnService } from './learn.service';
+import { ConfigService } from '@nestjs/config';
+import custom from '../config/custom';
 
 /*
 创建命令： nest g controller learn
@@ -17,20 +20,28 @@ import { CreateCatDto } from './dto/learn.dto';
 
 @Controller('/learn')
 export class LearnController {
+    /*
+     * 服务注入
+     * */
+    constructor(
+        private learnService: LearnService,
+        private configService: ConfigService,
+    ) {}
+
     @Get('/params')
-    params(@Query() query) {
+    async params(@Query() query) {
         console.log('query  ---->  ', query);
         return {};
     }
 
     @Get('/body')
-    body(@Body() body) {
+    async body(@Body() body) {
         console.log('query  ---->  ', body);
         return {};
     }
 
     @Get('/request')
-    request(@Req() request: Request): string {
+    async request(@Req() request: Request) {
         // express原生的请求对象request
         // 具有查询字符串，请求参数参数，HTTP 标头（HTTP header） 和 正文（HTTP body）的属性
         // 但通常用装饰器获取
@@ -38,17 +49,42 @@ export class LearnController {
     }
 
     @Get('/response')
-    response(@Res() res: Response) {
+    async response(@Res() res: Response) {
         // express原生的响应对象response
         res.status(HttpStatus.OK).json([]);
     }
 
-    @Post('/create')
-    async create(@Body() createCatDto: CreateCatDto) {
+    @Get('/invokeService')
+    async invokeService() {
+        const data = await this.learnService.findAll();
         return {
-            name: createCatDto.name,
-            age: createCatDto.age,
-            breed: createCatDto.breed,
+            code: 0,
+            msg: 'OK',
+            data: data,
         };
+    }
+
+    @Post('/create')
+    async create(@Body() createuserDto: CreateuserDto) {
+        return {
+            name: createuserDto.name,
+            age: createuserDto.age,
+            breed: createuserDto.breed,
+        };
+    }
+
+    @Get('/getConfig')
+    async getConfig() {
+        const DATABASE_USER =
+            this.configService.get<string>('DATABASE_USER') ?? null;
+        const DATABASE_HOST =
+            this.configService.get<string>('DATABASE_HOST') ?? null;
+        const aaa = this.configService.get<string>('custom.aaa') ?? null;
+        const bbb =
+            this.configService.get<string>('configuration.http.port') ?? null;
+
+        const pg =
+            this.configService.get<string>('customConfiguration.pg') ?? null;
+        return { DATABASE_USER, DATABASE_HOST, aaa, bbb, pg };
     }
 }

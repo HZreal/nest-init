@@ -2,8 +2,7 @@
  * @author sizhong
  * @date 2023-05-08
  */
-export interface Cat {
+export interface user {
+    id: number;
     name: string;
-    age: number;
-    breed: string;
 }
