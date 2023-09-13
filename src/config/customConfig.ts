@@ -3,17 +3,12 @@
  * @date 2023-05-08
  * 自定义命名空间的配置
  */
-import { registerAs } from '@nestjs/config';
 
 /*
  * 注册一个 custom 命名空间的配置
  * */
-export default registerAs('custom', () => ({
-    aaa: 'aaa',
-}));
 
-// TODO 没有调通
-export const customConfiguration = () => ({
+export default () => ({
     // jwt
     jwt: {
         secret: process.env.JWT_SECRET || '123456',

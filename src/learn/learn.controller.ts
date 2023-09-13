@@ -12,7 +12,7 @@ import { Request, Response } from 'express';
 import { CreateuserDto } from './dto/learn.dto';
 import { LearnService } from './learn.service';
 import { ConfigService } from '@nestjs/config';
-import custom from '../config/custom';
+import custom from '../config/customConfig';
 
 /*
 创建命令： nest g controller learn
@@ -31,13 +31,13 @@ export class LearnController {
     @Get('/params')
     async params(@Query() query) {
         console.log('query  ---->  ', query);
-        return {};
+        return query;
     }
 
     @Get('/body')
     async body(@Body() body) {
-        console.log('query  ---->  ', body);
-        return {};
+        console.log('body  ---->  ', body);
+        return body;
     }
 
     @Get('/request')
