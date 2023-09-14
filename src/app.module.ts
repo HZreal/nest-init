@@ -28,7 +28,7 @@ import { LearnModule } from './learn/learn.module';
             envFilePath: ['.env.development', '.env.local'], // 指定多个路径的配置文件，出现同样的 key 时，优先取前面的
             ignoreEnvFile: true, // 禁用.env文件加载，禁用时设置的路径均无效。即仅从运行时环境访问环境变量 (export DB_USER=test)
             isGlobal: true, // 声明为全局模块，则其他模块使用此模块时无需再导入此模块
-            load: [objectConfig],
+            load: [objectConfig], // 可三者混合加载
             // load: [loadYamlConfig],
             // load: [getConfiguration], // TODO 当前仅此配置使TypeOrmModule.forRootAsync加载成功，其他的需要配置
         }),
