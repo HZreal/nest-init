@@ -6,14 +6,16 @@ import { Processor, Process, OnQueueActive } from '@nestjs/bull';
 import { Job } from 'bull';
 import { Logger } from '@nestjs/common';
 
-@Processor('aaaa')
+@Processor('learn')
 export class LearnProcessor {
     private readonly logger = new Logger(LearnProcessor.name);
 
-    @Process('bbbb')
+    @Process('jobName')
     handleTranscode(job: Job) {
         this.logger.debug('Start transcoding...');
-        this.logger.debug(job.data);
+
+        // handle job task;
+
         this.logger.debug('Transcoding completed');
     }
 

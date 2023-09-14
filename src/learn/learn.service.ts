@@ -4,6 +4,7 @@ import { DataSource, Repository } from 'typeorm';
 import { User } from './learn.entity';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class LearnService {
@@ -16,7 +17,7 @@ export class LearnService {
         private dataSource: DataSource,
 
         //
-        @InjectQueue('aaaa') private readonly audioQueue: Queue,
+        @InjectQueue('learn') private readonly audioQueue: Queue,
     ) {}
 
     /**
@@ -42,12 +43,14 @@ export class LearnService {
         }
     }
 
-    async sendMsg(msg: string) {
-        const job = await this.audioQueue.add('bbbb', {
+    /**
+     * 发送 queue 消息
+     */
+    async sendQueueMsg() {
+        const job = await this.audioQueue.add('jobName', {
             foo: 'bar',
         });
         console.log('job  ---->  ', job);
-        return 123;
     }
 
     async findAll(): Promise<User[]> {
@@ -58,6 +61,9 @@ export class LearnService {
         return this.usersRepository.findOneBy({ id });
     }
 
+    async update(id: number, updateUserDto: UpdateUserDto) {
+        return `This action updates a #${id} user`;
+    }
     async remove(id: number): Promise<void> {
         await this.usersRepository.delete(id);
     }

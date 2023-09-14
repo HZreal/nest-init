@@ -9,14 +9,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './learn.entity';
 import { LearnProcessor } from './learn.processor';
 import { BullModule } from '@nestjs/bull';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
     imports: [
         //
         TypeOrmModule.forFeature([User]),
         //
+        ConfigModule,
+        //
         BullModule.registerQueue({
-            name: 'aaaa',
+            name: 'learn',
         }),
     ],
     controllers: [LearnController],

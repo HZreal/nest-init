@@ -24,7 +24,7 @@ export class AppController {
 
     @Get('/test/sendMsg')
     async test() {
-        await this.learnService.sendMsg('');
+        await this.learnService.sendQueueMsg();
     }
 }
 

@@ -17,7 +17,7 @@ describe('LearnService', () => {
         const module: TestingModule = await Test.createTestingModule({
             imports: [
                 BullModule.registerQueue({
-                    name: 'aaaa',
+                    name: 'learn',
                 }),
             ],
             providers: [
@@ -31,7 +31,7 @@ describe('LearnService', () => {
                     useValue: {}, // 使用一个空对象或者模拟 DataSource
                 },
                 // {
-                //     provide: getQueueToken('aaaa'), // 使用 @InjectQueue 提供的令牌
+                //     provide: getQueueToken('learn'), // 使用 @InjectQueue 提供的令牌
                 //     useClass: Query, // 使用真实的 Queue 类或其模拟版本
                 // },
             ],
@@ -42,10 +42,10 @@ describe('LearnService', () => {
         //     getRepositoryToken(User),
         // );
         // dataSource = module.get<DataSource>(DataSource);
-        // audioQueue = module.get<Queue>(getQueueToken('aaaa'));
+        // audioQueue = module.get<Queue>(getQueueToken('learn'));
     });
 
     it('should be defined', async () => {
-        expect(await service.sendMsg('')).toEqual(123);
+        expect(await service.sendQueueMsg()).toEqual(123);
     }, 10000);
 });

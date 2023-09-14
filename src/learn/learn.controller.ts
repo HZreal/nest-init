@@ -85,6 +85,10 @@ export class LearnController {
 
         const pg =
             this.configService.get<string>('customConfiguration.pg') ?? null;
+
+        const jwt = this.configService.get('jwt');
+        console.log('jwt  ---->  ', jwt);
+
         return { DATABASE_USER, DATABASE_HOST, aaa, bbb, pg };
     }
 }
