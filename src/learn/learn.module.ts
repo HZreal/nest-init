@@ -7,11 +7,20 @@ import {
 } from '../common/middleware/loggerMiddleware';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './learn.entity';
+import { LearnProcessor } from './learn.processor';
+import { BullModule } from '@nestjs/bull';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([User])],
+    imports: [
+        //
+        TypeOrmModule.forFeature([User]),
+        //
+        BullModule.registerQueue({
+            name: 'aaaa',
+        }),
+    ],
     controllers: [LearnController],
-    providers: [LearnService],
+    providers: [LearnService, LearnProcessor],
 })
 export class LearnModule implements NestModule {
     /*

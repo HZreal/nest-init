@@ -13,6 +13,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 
 import { LearnModule } from './learn/learn.module';
+import { BullModule } from '@nestjs/bull';
 
 @Module({
     // 新建一个子模块需要在此注册
@@ -73,6 +74,15 @@ import { LearnModule } from './learn/learn.module';
         //     }),
         //     inject: [ConfigService],
         // }),
+
+        //
+        BullModule.forRoot({
+            redis: {
+                host: '10.211.55.4',
+                port: 6379,
+                db: 15,
+            },
+        }),
     ],
     // 模块内的控制器需要在此注册
     // 若注册了 module，则 module 中的 Controller、Service 不再需要注册
