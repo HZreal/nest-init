@@ -42,11 +42,12 @@ export class LearnService {
         }
     }
 
-    async sendMsg(msg: string): Promise<void> {
+    async sendMsg(msg: string) {
         const job = await this.audioQueue.add('bbbb', {
             foo: 'bar',
         });
         console.log('job  ---->  ', job);
+        return 123;
     }
 
     async findAll(): Promise<User[]> {

@@ -1,9 +1,13 @@
 import { Controller, Get, Query, Redirect } from '@nestjs/common';
 import { AppService } from './app.service';
+import { LearnService } from './learn/learn.service';
 
 @Controller()
 export class AppController {
-    constructor(private readonly appService: AppService) {}
+    constructor(
+        private readonly appService: AppService,
+        private readonly learnService: LearnService,
+    ) {}
 
     @Get()
     getHello(): string {
@@ -16,6 +20,11 @@ export class AppController {
         if (version && version === '5') {
             return { url: 'https://docs.nestjs.com/v5/' };
         }
+    }
+
+    @Get('/test/sendMsg')
+    async test() {
+        await this.learnService.sendMsg('');
     }
 }
 

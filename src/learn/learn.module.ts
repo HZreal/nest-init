@@ -21,6 +21,7 @@ import { BullModule } from '@nestjs/bull';
     ],
     controllers: [LearnController],
     providers: [LearnService, LearnProcessor],
+    exports: [LearnService],
 })
 export class LearnModule implements NestModule {
     /*
