@@ -14,8 +14,8 @@ export class AppController {
     @Get('/nest/doc')
     @Redirect('https://docs.nestjs.com', 302)
     getDocs(@Query('version') version) {
-        if (version && version === '5') {
-            return { url: 'https://docs.nestjs.com/v5/' };
+        if (version && version === '9') {
+            return { url: 'https://docs.nestjs.com/v9/' };
         }
     }
 }

@@ -22,7 +22,7 @@ import { CacheModule } from '@nestjs/cache-manager';
         LearnModule,
 
         /*
-         * 配置 module
+         * 导入 ConfigModule
          * */
         ConfigModule.forRoot({
             // envFilePath: '.development.env', // 指定 .env 文件的路径，默认为根目录的 .env , 当配置文件和环境变量存在同样的 key 时，环境变量的优先
@@ -35,7 +35,7 @@ import { CacheModule } from '@nestjs/cache-manager';
         }),
 
         /*
-         * typeorm module
+         * 导入 TypeOrmModule
          * */
         // TypeOrmModule.forRoot({
         //     type: 'postgres',
@@ -80,10 +80,14 @@ import { CacheModule } from '@nestjs/cache-manager';
             inject: [ConfigService],
         }),
 
-        //
+        /*
+         * 导入 CacheModule
+         * */
         CacheModule.register({ isGlobal: true }),
 
-        //
+        /*
+         * 导入 BullModule
+         * */
         BullModule.forRoot({
             redis: {
                 host: '10.211.55.4',
@@ -92,8 +96,7 @@ import { CacheModule } from '@nestjs/cache-manager';
             },
         }),
     ],
-    // 模块内的控制器需要在此注册
-    // 若注册了 module，则 module 中的 Controller、Service 不再需要注册
+    // 模块内的控制器需要在此注册，若注册了 module，则 module 中的 Controller、Service 不再需要注册
     controllers: [AppController, IndexController, TestController],
     // 模块内的服务需要在此注册
     providers: [AppService],
