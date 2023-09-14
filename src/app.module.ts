@@ -1,19 +1,19 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { AppController, IndexController } from './app.controller';
+import {
+    AppController,
+    IndexController,
+    TestController,
+} from './app.controller';
 import { AppService } from './app.service';
-
 import { LoggerMiddleware } from './common/middleware/loggerMiddleware';
-
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import objectConfig from './config/customConfig';
-// import { ConfigurationKeyPaths, getConfiguration } from './config/configExtra';
 import { loadYamlConfig } from './config/yamlConfigReader';
-
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
-
 import { LearnModule } from './learn/learn.module';
 import { BullModule } from '@nestjs/bull';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
     // 新建一个子模块需要在此注册
@@ -37,43 +37,51 @@ import { BullModule } from '@nestjs/bull';
         /*
          * typeorm module
          * */
-        TypeOrmModule.forRoot({
-            type: 'postgres',
-            host: '192.168.1.7',
-            port: 5432,
-            username: 'postgres',
-            password: 'szkj1234567890',
-            database: 'ttest',
-            // entities: [User],
-            autoLoadEntities: true,
-            // synchronize: true,
-        }),
-        // TypeOrmModule.forRootAsync({
-        //     imports: [ConfigModule],
-        //     useFactory: (
-        //         configService: ConfigService<ConfigurationKeyPaths>,
-        //         // loggerOptions: LoggerModuleOptions,
-        //     ) => ({
-        //         autoLoadEntities: true,
-        //         type: 'postgres',
-        //         // type: configService.get<any>('database.type'),
-        //         host: configService.get<string>('database.host'),
-        //         port: configService.get<number>('database.port'),
-        //         username: configService.get<string>('database.username'),
-        //         password: configService.get<string>('database.password'),
-        //         database: configService.get<string>('database.database'),
-        //         synchronize: configService.get<boolean>('database.synchronize'),
-        //         logging: configService.get('database.logging'),
-        //         // timezone: configService.get('database.timezone'), // 出错
-        //
-        //         // 自定义日志
-        //         // logger: new TypeORMLoggerService(
-        //         //     configService.get('database.logging'),
-        //         //     loggerOptions,
-        //         // ),
-        //     }),
-        //     inject: [ConfigService],
+        // TypeOrmModule.forRoot({
+        //     type: 'postgres',
+        //     host: '192.168.1.7',
+        //     port: 5432,
+        //     username: 'postgres',
+        //     password: 'szkj1234567890',
+        //     database: 'ttest',
+        //     // entities: [User],
+        //     autoLoadEntities: true,
+        //     // synchronize: true,
         // }),
+        TypeOrmModule.forRootAsync({
+            imports: [ConfigModule],
+            // 方式一
+            useFactory: (
+                configService: ConfigService,
+                // loggerOptions: LoggerModuleOptions,
+            ) => ({
+                autoLoadEntities: true,
+                type: configService.get<any>('pg.type'),
+                host: configService.get<string>('pg.host'),
+                port: configService.get<number>('pg.port'),
+                username: configService.get<string>('pg.username'),
+                password: configService.get<string>('pg.password'),
+                database: configService.get<string>('pg.database'),
+                // synchronize: configService.get<boolean>('pg.synchronize'),
+                // logging: configService.get('pg.logging'),
+                // timezone: configService.get('database.timezone'), // 出错
+
+                // 自定义日志
+                // logger: new TypeORMLoggerService(
+                //     configService.get('database.logging'),
+                //     loggerOptions,
+                // ),
+            }),
+
+            // 方式二
+            // useClass: TypeOrmConfigService,
+            // 需要定义 TypeOrmConfigService， https://docs.nestjs.com/techniques/database#async-configuration
+
+            inject: [ConfigService],
+        }),
+
+        //
+        CacheModule.register({ isGlobal: true }),
 
         //
         BullModule.forRoot({
@@ -86,7 +94,7 @@ import { BullModule } from '@nestjs/bull';
     ],
     // 模块内的控制器需要在此注册
     // 若注册了 module，则 module 中的 Controller、Service 不再需要注册
-    controllers: [AppController, IndexController],
+    controllers: [AppController, IndexController, TestController],
     // 模块内的服务需要在此注册
     providers: [AppService],
 })

@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@nestjs/bull": "^10.0.1",
+    "@nestjs/cache-manager": "^2.1.0",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.3.1",
     "@nestjs/core": "^9.0.0",
@@ -28,6 +29,7 @@
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/typeorm": "^9.0.1",
     "bull": "^4.11.3",
+    "cache-manager": "^5.2.3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "js-yaml": "^4.1.0",

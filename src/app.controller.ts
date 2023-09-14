@@ -4,10 +4,7 @@ import { LearnService } from './learn/learn.service';
 
 @Controller()
 export class AppController {
-    constructor(
-        private readonly appService: AppService,
-        private readonly learnService: LearnService,
-    ) {}
+    constructor(private readonly appService: AppService) {}
 
     @Get()
     getHello(): string {
@@ -21,10 +18,19 @@ export class AppController {
             return { url: 'https://docs.nestjs.com/v5/' };
         }
     }
+}
 
-    @Get('/test/sendMsg')
-    async test() {
+@Controller('/test')
+export class TestController {
+    constructor(private readonly learnService: LearnService) {}
+    @Get('/sendQueueMsg')
+    async sendQueueMsg() {
         await this.learnService.sendQueueMsg();
+    }
+
+    @Get('/operateCache')
+    async operateCache() {
+        await this.learnService.getAndSetCache();
     }
 }
 

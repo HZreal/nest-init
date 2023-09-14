@@ -1,10 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 import { User } from './learn.entity';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class LearnService {
@@ -15,6 +17,9 @@ export class LearnService {
 
         //
         private dataSource: DataSource,
+
+        //
+        @Inject(CACHE_MANAGER) private cacheManager: Cache,
 
         //
         @InjectQueue('learn') private readonly audioQueue: Queue,
@@ -51,6 +56,18 @@ export class LearnService {
             foo: 'bar',
         });
         console.log('job  ---->  ', job);
+    }
+
+    async getAndSetCache() {
+        // set
+        await this.cacheManager.set('key', 'value', 1000);
+        // get
+        const value = await this.cacheManager.get('key');
+        console.log('value  ---->  ', value);
+        // delete
+        await this.cacheManager.del('key');
+        // clear the entire cache
+        await this.cacheManager.reset();
     }
 
     async findAll(): Promise<User[]> {

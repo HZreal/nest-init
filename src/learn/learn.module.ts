@@ -14,9 +14,9 @@ import { ConfigModule } from '@nestjs/config';
 @Module({
     imports: [
         //
-        TypeOrmModule.forFeature([User]),
-        //
         ConfigModule,
+        //
+        TypeOrmModule.forFeature([User]),
         //
         BullModule.registerQueue({
             name: 'learn',
