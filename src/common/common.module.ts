@@ -6,9 +6,14 @@ import { BullModule } from '@nestjs/bull';
 @Module({
     imports: [
         //
-        BullModule.registerQueue({
-            name: 'learn',
-        }),
+        BullModule.registerQueue(
+            {
+                name: 'learn',
+            },
+            {
+                name: 'learn2',
+            },
+        ),
     ],
     providers: [CommonService, QueueService],
     exports: [CommonService, QueueService],
