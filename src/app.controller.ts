@@ -23,9 +23,11 @@ export class AppController {
 @Controller('/test')
 export class TestController {
     constructor(private readonly learnService: LearnService) {}
-    @Get('/sendQueueMsg')
+    @Get('/sendMsg')
     async sendQueueMsg() {
-        await this.learnService.sendQueueMsg();
+        // await this.learnService.sendQueueMsg();
+        await this.learnService.sendMsg();
+        return { code: 0, message: {} };
     }
 
     @Get('/operateCache')

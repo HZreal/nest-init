@@ -10,6 +10,7 @@ import { User } from './learn.entity';
 import { LearnProcessor } from './learn.processor';
 import { BullModule } from '@nestjs/bull';
 import { ConfigModule } from '@nestjs/config';
+import { CommonModule } from '../common/common.module';
 
 @Module({
     imports: [
@@ -21,6 +22,8 @@ import { ConfigModule } from '@nestjs/config';
         BullModule.registerQueue({
             name: 'learn',
         }),
+        //
+        CommonModule,
     ],
     controllers: [LearnController],
     providers: [LearnService, LearnProcessor],

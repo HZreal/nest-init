@@ -5,18 +5,22 @@
 import { Processor, Process, OnQueueActive } from '@nestjs/bull';
 import { Job } from 'bull';
 import { Logger } from '@nestjs/common';
+import { LearnService } from './learn.service';
 
 @Processor('learn')
 export class LearnProcessor {
     private readonly logger = new Logger(LearnProcessor.name);
 
+    constructor(private learnService: LearnService) {}
+
     @Process('jobName')
-    handleTranscode(job: Job) {
-        this.logger.debug('Start transcoding...');
+    async gotMessage(job: Job) {
+        this.logger.verbose('Start handling...');
 
-        // handle job task;
+        // handle job task message;
+        await this.learnService.handleJobTaskMessage(job.data);
 
-        this.logger.debug('Transcoding completed');
+        this.logger.verbose('handle completed');
     }
 
     // @OnQueueActive()
