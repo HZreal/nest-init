@@ -7,12 +7,14 @@ import {
     Query,
     Req,
     Res,
+    UploadedFile,
+    UseInterceptors,
 } from '@nestjs/common';
-import { Request, Response } from 'express';
+import { Request, Response, Express } from 'express';
 import { CreateuserDto } from './dto/learn.dto';
 import { LearnService } from './learn.service';
 import { ConfigService } from '@nestjs/config';
-import custom from '../config/customConfig';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 /*
 创建命令： nest g controller learn
@@ -90,5 +92,12 @@ export class LearnController {
         console.log('jwt  ---->  ', jwt);
 
         return { DATABASE_USER, DATABASE_HOST, aaa, bbb, pg };
+    }
+
+    @Post('upload')
+    @UseInterceptors(FileInterceptor('file'))
+    uploadFile(@UploadedFile() file: Express.Multer.File, @Body() body: any) {
+        console.log('file  ---->  ', file);
+        console.log('body  ---->  ', body);
     }
 }

@@ -7,6 +7,7 @@ import { Queue } from 'bull';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
+import { QueueService } from '../common/queue.service';
 
 @Injectable()
 export class LearnService {
@@ -18,11 +19,14 @@ export class LearnService {
         //
         private dataSource: DataSource,
 
-        //
+        // 声明调用 Cache
         @Inject(CACHE_MANAGER) private cacheManager: Cache,
 
-        //
+        // 声明调用 bull
         @InjectQueue('learn') private readonly audioQueue: Queue,
+
+        // 声明自定义 CommonModule 中的 QueueService(对 bull 的封装)
+        private queueService: QueueService,
     ) {}
 
     /**
@@ -49,13 +53,30 @@ export class LearnService {
     }
 
     /**
-     * 发送 queue 消息
+     * 直接调用 Bull 发送 queue 消息
      */
     async sendQueueMsg() {
         const job = await this.audioQueue.add('jobName', {
             foo: 'bar',
         });
         console.log('job  ---->  ', job);
+    }
+
+    /**
+     * 调用 QueueService (间接调用 bull) 发送 queue 消息
+     */
+    async sendMsg() {
+        await this.queueService.sendQueueMsg('jobName', {
+            foo: 'bar',
+        });
+    }
+
+    /**
+     * 对监听消息进行处理
+     * @param msg
+     */
+    async handleJobTaskMessage(msg) {
+        console.log('msg  ---->  ', msg);
     }
 
     async getAndSetCache() {
