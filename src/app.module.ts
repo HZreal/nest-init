@@ -15,6 +15,8 @@ import { LearnModule } from './learn/learn.module';
 import { BullModule } from '@nestjs/bull';
 import { CacheModule } from '@nestjs/cache-manager';
 import { CommonModule } from './common/common.module';
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
 
 @Module({
     // 新建一个子模块需要在此注册
@@ -98,6 +100,10 @@ import { CommonModule } from './common/common.module';
         }),
 
         CommonModule,
+
+        AuthModule,
+
+        UserModule,
     ],
     // 模块内的控制器需要在此注册，若注册了 module，则 module 中的 Controller、Service 不再需要注册
     controllers: [AppController, IndexController, TestController],

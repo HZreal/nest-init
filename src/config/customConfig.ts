@@ -11,7 +11,7 @@
 export default () => ({
     // jwt
     jwt: {
-        secret: process.env.JWT_SECRET || '123456',
+        secret: process.env.JWT_SECRET || 'jwt123456',
     },
 
     // typeorm config
