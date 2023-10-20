@@ -6,14 +6,15 @@ import { Processor, Process, OnQueueActive } from '@nestjs/bull';
 import { Job } from 'bull';
 import { Logger } from '@nestjs/common';
 import { LearnService } from './learn.service';
+import { bullQueue } from '../constant/queue';
 
-@Processor('queue')
+@Processor(bullQueue.learn.queueName)
 export class LearnProcessor {
     private readonly logger = new Logger(LearnProcessor.name);
 
     constructor(private learnService: LearnService) {}
 
-    @Process('jobName')
+    @Process(bullQueue.learn.jobName.job1)
     async gotMessage(job: Job) {
         this.logger.verbose('Start handling...');
 

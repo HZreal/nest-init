@@ -11,6 +11,7 @@ import { LearnProcessor } from './learn.processor';
 import { BullModule } from '@nestjs/bull';
 import { ConfigModule } from '@nestjs/config';
 import { CommonModule } from '../common/common.module';
+import { bullQueue } from '../constant/queue';
 
 @Module({
     imports: [
@@ -20,7 +21,7 @@ import { CommonModule } from '../common/common.module';
         TypeOrmModule.forFeature([User]),
         //
         BullModule.registerQueue({
-            name: 'queue',
+            name: bullQueue.learn.queueName,
         }),
         //
         CommonModule,

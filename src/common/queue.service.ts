@@ -9,6 +9,7 @@ import { Queue } from 'bull';
 export class QueueService {
     constructor(
         //
+        @InjectQueue('learn') private readonly learnClient: Queue,
         @InjectQueue('queue') private readonly queueClient: Queue,
         @InjectQueue('user') private readonly userBullClient: Queue,
         @InjectQueue('role') private readonly roleBullClient: Queue,
@@ -24,6 +25,9 @@ export class QueueService {
         opt = {},
     ) {
         switch (queueName) {
+            case 'learn': {
+                return await this.learnClient.add(jobName, msg, opt);
+            }
             case 'queue': {
                 return await this.queueClient.add(jobName, msg, opt);
             }

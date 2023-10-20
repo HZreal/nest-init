@@ -8,6 +8,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { QueueService } from '../common/queue.service';
+import { bullQueue } from '../constant/queue';
 
 @Injectable()
 export class LearnService {
@@ -23,7 +24,8 @@ export class LearnService {
         @Inject(CACHE_MANAGER) private cacheManager: Cache,
 
         // 声明调用 bull (这里声明的 queue name 必须与 module 中注册的一致)
-        @InjectQueue('queue') private readonly queueBullClient: Queue,
+        // @InjectQueue(bullQueue.learn.queueName)
+        // private readonly queueBullClient: Queue,
 
         // 声明自定义 CommonModule 中的 QueueService(对 bull 的封装)
         private queueService: QueueService,
@@ -57,19 +59,25 @@ export class LearnService {
      * 直接调用 Bull 发送 queue 消息
      */
     async sendQueueMsg() {
-        const job = await this.queueBullClient.add('jobName', {
-            foo: 'bar',
-        });
-        console.log('job  ---->  ', job);
+        // await this.queueBullClient.add(
+        //     bullQueue.learn.jobName.job1,
+        //     {
+        //         foo: 'bar',
+        //     },
+        // );
     }
 
     /**
      * 调用 QueueService (间接调用 bull) 发送 queue 消息
      */
     async sendMsg() {
-        await this.queueService.sendQueueMsg('queue', 'jobName', {
-            foo: 'bar',
-        });
+        await this.queueService.sendQueueMsg(
+            bullQueue.learn.queueName,
+            bullQueue.learn.jobName.job1,
+            {
+                foo: 'bar',
+            },
+        );
     }
 
     /**
