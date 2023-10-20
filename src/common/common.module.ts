@@ -2,22 +2,26 @@ import { Module } from '@nestjs/common';
 import { CommonService } from './common.service';
 import { QueueService } from './queue.service';
 import { BullModule } from '@nestjs/bull';
+import { bullQueue } from '../constant/queue';
 
 @Module({
     imports: [
         //
         BullModule.registerQueue(
             {
-                name: 'learn',
+                name: bullQueue.learn.queueName,
             },
             {
-                name: 'queue',
+                name: bullQueue.queue.queueName,
             },
             {
-                name: 'user',
+                name: bullQueue.user.queueName,
             },
             {
-                name: 'role',
+                name: bullQueue.role.queueName,
+            },
+            {
+                name: bullQueue.default.queueName,
             },
         ),
     ],
