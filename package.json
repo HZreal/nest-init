@@ -29,6 +29,8 @@
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/typeorm": "^9.0.1",
     "@types/lodash": "^4.14.198",
+    "amqp-connection-manager": "^4.1.14",
+    "amqplib": "^0.10.3",
     "bull": "^4.11.3",
     "cache-manager": "^5.2.3",
     "class-transformer": "^0.5.1",

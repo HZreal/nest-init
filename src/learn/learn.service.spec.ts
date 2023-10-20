@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { LearnService } from './learn.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { User } from './learn.entity';
+import { UserEntity } from './learn.entity';
 import { BullModule, getQueueToken } from '@nestjs/bull';
 import { DataSource, Repository } from 'typeorm';
 import { Queue } from 'bull';
@@ -10,7 +10,7 @@ import { Query } from '@nestjs/common';
 describe('LearnService', () => {
     let service: LearnService;
     let dataSource: DataSource;
-    let usersRepository: Repository<User>;
+    let usersRepository: Repository<UserEntity>;
     let audioQueue: Queue;
 
     beforeEach(async () => {
@@ -23,7 +23,7 @@ describe('LearnService', () => {
             providers: [
                 LearnService,
                 {
-                    provide: getRepositoryToken(User), // 使用 @InjectRepository 提供的令牌
+                    provide: getRepositoryToken(UserEntity), // 使用 @InjectRepository 提供的令牌
                     useClass: Repository, // 使用真实的 Repository 类或其模拟版本
                 },
                 {

@@ -6,7 +6,7 @@ import {
     loggerFunctionMiddleware,
 } from '../common/middleware/loggerMiddleware';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './learn.entity';
+import { UserEntity } from './learn.entity';
 import { LearnProcessor } from './learn.processor';
 import { BullModule } from '@nestjs/bull';
 import { ConfigModule } from '@nestjs/config';
@@ -18,7 +18,7 @@ import { bullQueue } from '../constant/queue';
         //
         ConfigModule,
         //
-        TypeOrmModule.forFeature([User]),
+        TypeOrmModule.forFeature([UserEntity]),
         //
         BullModule.registerQueue({
             name: bullQueue.learn.queueName,

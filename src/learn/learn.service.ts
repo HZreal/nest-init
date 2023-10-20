@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
-import { User } from './learn.entity';
+import { UserEntity } from './learn.entity';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -9,19 +9,29 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { QueueService } from '../common/queue.service';
 import { bullQueue } from '../constant/queue';
+// import {
+//     ClientProxy,
+//     Ctx,
+//     MessagePattern,
+//     Payload,
+//     RmqContext,
+// } from '@nestjs/microservices';
 
 @Injectable()
 export class LearnService {
     constructor(
         //
-        @InjectRepository(User)
-        private usersRepository: Repository<User>,
+        @InjectRepository(UserEntity)
+        private usersRepository: Repository<UserEntity>,
 
         //
         private dataSource: DataSource,
 
         // 声明调用 Cache
         @Inject(CACHE_MANAGER) private cacheManager: Cache,
+
+        // @Inject('RabbitMQ_SERVICE')
+        // private readonly rabbitMQClient: ClientProxy,
 
         // 声明调用 bull (这里声明的 queue name 必须与 module 中注册的一致)
         // @InjectQueue(bullQueue.learn.queueName)
@@ -100,11 +110,32 @@ export class LearnService {
         await this.cacheManager.reset();
     }
 
-    async findAll(): Promise<User[]> {
+    /**
+     * TODO 发送微服务 rabbitMQ 消息
+     */
+    async sendRabbitMQMsg(msg: string): Promise<void> {
+        // const result = this.rabbitMQClient
+        //     .send('huang', { aaaaaa: 'bbbbbb' })
+        //     .subscribe();
+        // console.log(result);
+    }
+
+    /**
+     * TODO 接收微服务 rabbitMQ 消息
+     */
+    // @MessagePattern('huang')
+    // getNotifications(@Payload() data: any, @Ctx() context: RmqContext) {
+    //     console.log('get message ---->  ', data);
+    //     console.log('getPattern ---->  ', context.getPattern());
+    //     console.log('getMessage ---->  ', context.getMessage());
+    //     console.log('getChannelRef ---->  ', context.getChannelRef());
+    // }
+
+    async findAll(): Promise<UserEntity[]> {
         return this.usersRepository.find();
     }
 
-    async findOne(id: number): Promise<User | null> {
+    async findOne(id: number): Promise<UserEntity | null> {
         return this.usersRepository.findOneBy({ id });
     }
 
