@@ -7,7 +7,7 @@ import { Job } from 'bull';
 import { Logger } from '@nestjs/common';
 import { LearnService } from './learn.service';
 
-@Processor('learn')
+@Processor('queue')
 export class LearnProcessor {
     private readonly logger = new Logger(LearnProcessor.name);
 

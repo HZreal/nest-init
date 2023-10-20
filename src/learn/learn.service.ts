@@ -22,8 +22,8 @@ export class LearnService {
         // 声明调用 Cache
         @Inject(CACHE_MANAGER) private cacheManager: Cache,
 
-        // 声明调用 bull
-        @InjectQueue('learn') private readonly audioQueue: Queue,
+        // 声明调用 bull (这里声明的 queue name 必须与 module 中注册的一致)
+        @InjectQueue('queue') private readonly queueBullClient: Queue,
 
         // 声明自定义 CommonModule 中的 QueueService(对 bull 的封装)
         private queueService: QueueService,
@@ -42,9 +42,10 @@ export class LearnService {
             await queryRunner.manager.save(users[0]);
             await queryRunner.manager.save(users[1]);
 
+            // 提交
             await queryRunner.commitTransaction();
         } catch (err) {
-            // since we have errors lets rollback the changes we made
+            // 回滚
             await queryRunner.rollbackTransaction();
         } finally {
             // you need to release a queryRunner which was manually instantiated
@@ -56,7 +57,7 @@ export class LearnService {
      * 直接调用 Bull 发送 queue 消息
      */
     async sendQueueMsg() {
-        const job = await this.audioQueue.add('jobName', {
+        const job = await this.queueBullClient.add('jobName', {
             foo: 'bar',
         });
         console.log('job  ---->  ', job);
@@ -66,7 +67,7 @@ export class LearnService {
      * 调用 QueueService (间接调用 bull) 发送 queue 消息
      */
     async sendMsg() {
-        await this.queueService.sendQueueMsg('jobName', {
+        await this.queueService.sendQueueMsg('queue', 'jobName', {
             foo: 'bar',
         });
     }

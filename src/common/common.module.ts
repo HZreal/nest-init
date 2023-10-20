@@ -8,10 +8,13 @@ import { BullModule } from '@nestjs/bull';
         //
         BullModule.registerQueue(
             {
-                name: 'learn',
+                name: 'queue',
             },
             {
-                name: 'learn2',
+                name: 'user',
+            },
+            {
+                name: 'role',
             },
         ),
     ],

@@ -20,7 +20,7 @@ import { CommonModule } from '../common/common.module';
         TypeOrmModule.forFeature([User]),
         //
         BullModule.registerQueue({
-            name: 'learn',
+            name: 'queue',
         }),
         //
         CommonModule,

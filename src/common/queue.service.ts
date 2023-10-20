@@ -9,13 +9,30 @@ import { Queue } from 'bull';
 export class QueueService {
     constructor(
         //
-        @InjectQueue('learn') private readonly bullQueueService: Queue,
+        @InjectQueue('queue') private readonly queueClient: Queue,
+        @InjectQueue('user') private readonly userBullClient: Queue,
+        @InjectQueue('role') private readonly roleBullClient: Queue,
     ) {}
 
     /**
      * 发送 queue 消息
      */
-    async sendQueueMsg(name: string, msg: object, opt = {}) {
-        await this.bullQueueService.add(name, msg, opt);
+    async sendQueueMsg(
+        queueName = 'default',
+        jobName = 'default',
+        msg: object,
+        opt = {},
+    ) {
+        switch (queueName) {
+            case 'queue': {
+                return await this.queueClient.add(jobName, msg, opt);
+            }
+            case 'user': {
+                return await this.userBullClient.add(jobName, msg, opt);
+            }
+            case 'role': {
+                return await this.roleBullClient.add(jobName, msg, opt);
+            }
+        }
     }
 }
