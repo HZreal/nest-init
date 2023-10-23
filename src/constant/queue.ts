@@ -4,24 +4,24 @@
  */
 export const bullQueue = {
     learn: {
-        queueName: 'learn',
-        jobName: { job1: 'job1', job2: 'job2' },
+        queueName: 'queue.learn',
+        jobName: { job1: 'queue.learn.job.job1', job2: 'queue.learn.job.job2' },
     },
     queue: {
-        queueName: 'queue',
-        jobName: { job1: 'job1', job2: 'job2' },
+        queueName: 'queue.queue',
+        jobName: { job1: 'queue.queue.job.job1', job2: 'queue.queue.job.job2' },
     },
     user: {
-        queueName: 'user',
-        jobName: { job1: 'job1', job2: 'job2' },
+        queueName: 'queue.user',
+        jobName: { job1: 'queue.user.job.job1', job2: 'queue.user.job.job2' },
     },
     role: {
-        queueName: 'role',
-        jobName: { job1: 'job1', job2: 'job2' },
+        queueName: 'queue.role',
+        jobName: { job1: 'queue.role.job.job1', job2: 'queue.role.job.job2' },
     },
     // 默认队列
     default: {
-        queueName: 'default',
+        queueName: 'queue.default',
         jobName: 'default',
     },
 };
